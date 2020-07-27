@@ -1,5 +1,5 @@
 # mod1_project# 
-The Time Now - A Tracking CLI App
+The Time is Now - A Tracking CLI App
 ​
 ## Models & Relationships
 ### Route -< Workout >- User

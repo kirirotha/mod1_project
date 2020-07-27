@@ -1,9 +1,7 @@
-require 'bundler/setup'
-Bundler.require
+require_relative 'config/environment.rb'
+require "sinatra/activerecord/rake"
 
-ActiveRecord::Base.establish_connection(
-  :adapter => "sqlite3",
-  :database => "db/#{ENV['SINATRA_ENV']}.sqlite"
-)
-
-require_all 'app'
+desc "start console"
+task :console do
+  Pry.start
+end

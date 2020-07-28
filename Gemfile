@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+
 gem 'pry'
 gem 'rspec'
 gem 'activerecord', '~> 6.0.0', require: 'active_record'
@@ -8,3 +9,6 @@ gem 'sqlite3', '~>1.4'
 gem 'rake'
 gem 'database_cleaner'
 gem 'require_all'
+gem 'tty-prompt'
+gem 'bcrypt', '~> 3.1', '>= 3.1.15'
+

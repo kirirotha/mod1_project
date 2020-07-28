@@ -28,27 +28,28 @@ end
 def welcome_menu
     prompt = TTY::Prompt.new
 
-    x= prompt.select(" ") do |menu|
-        menu.enum '.'
+    welcome_m = prompt.select(" ") do |menu|
+        #menu.enum '.'
         menu.choice 'Log In', 1
         menu.choice 'Create New User', 2
         menu.choice 'Exit', 3
     end
 
-    if x == 1 
+    if welcome_m == 1 
         login
-    elsif x == 2
+    elsif welcome_m == 2
         create_new_user
-    elsif x == 3 
-        y= prompt.select("Are you sure you want to exit?") do |menu|
-            menu.enum '.'
+    elsif welcome_m == 3 
+        puts " "
+        exit_menu= prompt.select("Are you sure you want to exit?") do |menu|
+            #menu.enum '.'
             menu.choice 'Yes', 1
             menu.choice 'No', 2    
         end
-        if y == 1
+        if exit_menu == 1
             exit
-        elsif y==2
-            run_this
+        elsif exit_menu == 2
+            start_here
         end 
     end
 end
@@ -103,7 +104,11 @@ def create_new_password
         puts "Passwords do not match!"      
         create_new_password
     else
+        puts " "
         puts "New user sucessfully created!"
+        print "press any key"                                                                                                    
+        STDIN.getch                                                                                                              
+        print "  \r" 
         main_menu
     end
 end
@@ -114,43 +119,46 @@ def main_menu
     puts `clear`
     welcome_message 
 
-    x= prompt.select(" ") do |menu|
-        menu.enum '.'
+    main_m = prompt.select(" ") do |menu|
+        #menu.enum '.'
         menu.choice 'Browse Games', 1
         menu.choice 'Return Game', 2
         menu.choice 'View History', 3
         menu.choice 'Exit', 4
     end
 
-    if x == 1
+    if main_m == 1
         browse_games
     
 
-    elsif x == 2
+    elsif main_m == 2
         #return_game
     
 
-    elsif x == 3
+    elsif main_m == 3
         #view_history
     
 
-    elsif x == 4
-        y= prompt.select("Are you sure you want to exit?") do |menu|
-            menu.enum '.'
+    elsif main_m == 4
+        puts " "
+        exit_menu = prompt.select("Are you sure you want to exit?") do |menu|
+            #menu.enum '.'
             menu.choice 'Yes', 1
             menu.choice 'No', 2    
         end
-        if y == 1
+        if exit_menu == 1
             exit
-        elsif y==2
+        elsif exit_menu == 2
             main_menu
         end 
     end
 end
 
 def browse_games
-    browse_in = prompt.select("Choose an option:") do |menu|
-        menu.enum '.'
+    prompt = TTY::Prompt.new
+
+    browse_menu = prompt.select("Choose an option:") do |menu|
+        #menu.enum '.'
         menu.choice 'Search all games by title', 1
         menu.choice 'Search by games by genre', 2  
         menu.choice 'List all games A-Z', 3
@@ -158,19 +166,19 @@ def browse_games
         menu.choice 'Return to Main Menu', 5    
     end
 
-    if browse_in == 1
+    if browse_menu == 1
         #title_search
 
-    elsif y==2
+    elsif browse_menu == 2
         #genre_search
 
-    elsif y==3
+    elsif browse_menu == 3
         #list_all_games
 
-    elsif y==4
+    elsif browse_menu == 4 
         #list_available_games
 
-    elsif y==5
+    elsif browse_menu == 5
         main_menu
     end 
 

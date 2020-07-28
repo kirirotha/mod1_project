@@ -8,3 +8,24 @@ Game.create(name: "Borderlands 3", platform: "Xbox One", genre: "Shooter-Looter"
 Game.create(name: "Mario Kart 8 Deluxe", platform: "Nintendo Switch", genre: "Racing", rating: "E for Everyone", game_description: "Hit the road with the definitive version of Mario Kart 8 and play anytime, anywhere!", stock: 10 )
 Game.create(name: "Super Smash Bros. Ultimate", platform: "Nintendo Switch", genre: "Fighting", rating: "E for Everyone", game_description: "New stages and fighters are joined by the combined rosters of every past Super Smash Bros. game!", stock: 10 )
 Game.create(name: "Minecraft", platform: "Nintendo Switch", genre: "Sandbox", rating: "E for Everyone", game_description: "Minecraft is a game about placing blocks and going on adventures", stock: 10 )
+
+User.destroy_all
+User.create(name: "Andy", password: "game is life", age: 15)
+User.create(name: "Allen", password: "game is life", age: 18)
+User.create(name: "Ben", password: "game is life", age: 12)
+User.create(name: "Lucy", password: "game is life", age: 22)
+User.create(name: "Angel", password: "game is life", age: 20)
+User.create(name: "Tom", password: "game is life", age: 28)
+User.create(name: "Ryan", password: "game is life", age: 33)
+User.create(name: "Evan", password: "game is life", age: 26)
+User.create(name: "Judy", password: "game is life", age: 16)
+User.create(name: "Jessica", password: "game is life", age: 24)
+
+Checkout.destroy_all
+Checkout.create(user_id:7, game_id:5, rating:8, comment:"feels good to keep shooting", checkout_date: 2020-12-19, return_date: 2020-04-26)
+Checkout.create(user_id:9, game_id:7, rating:8, comment:"so much fun to play with family.", checkout_date: 2019-12-22, return_date: 2020-01-11)
+Checkout.create(user_id:3, game_id:8, rating:7, comment:"fight was intense.", checkout_date: 2020-01-05, return_date: 2020-03-13)
+Checkout.create(user_id:5, game_id:9, rating:6, comment:"freedom is mine", checkout_date: 2020-02-04, return_date: 2020-05-19)
+Checkout.create(user_id:2, game_id:4, rating:4, comment:"it is cool", checkout_date: 2020-02-11, return_date: 2020-03-16)
+Checkout.create(user_id:2, game_id:1, rating:8, comment:"ball is life", checkout_date: 2020-03-16, return_date: 2020-05-01)
+Checkout.create(user_id:1, game_id:2, rating:8, comment:"player looks so real", checkout_date: 2020-05-20, return_date: 2020-07-22)

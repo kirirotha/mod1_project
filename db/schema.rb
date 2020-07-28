@@ -23,8 +23,9 @@ ActiveRecord::Schema.define(version: 3) do
 
   create_table "games", force: :cascade do |t|
     t.string "name"
-    t.string "genre"
     t.string "platform"
+    t.string "genre"
+    t.string "rating"
     t.string "description"
     t.integer "stock"
   end

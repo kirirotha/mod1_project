@@ -1,0 +1,19 @@
+Game.create(name: “NBA 2K20”, platform: “PS4”, genre: ”Sports”, rating: “E for Everyone”, game_description: “NBA 2K20 is a platform for gamers and ballers to come together and create what’s next in basketball culture.”, stock: 10)
+
+Game.create(name: “NBA 2K20”, platform: “Xbox One”, genre: ”Sports”, rating: “E for Everyone”, game_description: “NBA 2K20 is a platform for gamers and ballers to come together and create what’s next in basketball culture.”, stock: 10 )
+
+Game.create(name: “Mortal Kombat 11”, platform: “PS4”, genre: ”Fighting”, rating: “M for Mature”, game_description: “The new graphics engine showcasing every skull shattering, eye popping moment, brings you so close to the fight you can feel it.”, stock: 10)
+
+Game.create(name: “Mortal Kombat 11”, platform: “Xbox One”, genre: ”Fighting”, rating: “M for Mature”, game_description: “The new graphics engine showcasing every skull shattering, eye popping moment, brings you so close to the fight you can feel it.”, stock: 10)
+
+Game.create(name: “Borderlands 3”, platform: “PS4”, genre: ”Shooter-Looter”, rating: “M”, game_description: “A mayhem fueled thrill ride: Stop the fanatical Calypso twins from uniting the bandit clans and claiming the galaxy’s ultimate power”, stock: 10 )
+
+Game.create(name: “Borderlands 3”, platform: “Xbox One”, genre: ”Shooter-Looter”, rating: “M for Mature”, game_description: “A mayhem fueled thrill ride: Stop the fanatical Calypso twins from uniting the bandit clans and claiming the galaxy’s ultimate power”, stock: 10 )
+
+Game.create(name: “Mario Kart 8 Deluxe”, platform: “Nintendo Switch”, genre: ”Racing, rating: “E for Everyone”, game_description: “Hit the road with the definitive version of Mario Kart 8 and play anytime, anywhere!”, stock: 10 )
+
+Game.create(name: “Super Smash Bros. Ultimate”, platform: “Nintendo Switch”, genre: ”Fighting”, rating: “E for Everyone”, game_description: “New stages and fighters are joined by the combined rosters of every past Super Smash Bros. game!”, stock: 10 )
+
+Game.create(name: “Minecraft”, platform: “Nintendo Switch”, genre: ”Sandbox”, rating: “E for Everyone”, game_description: “Minecraft is a game about placing blocks and going on adventures”, stock: 10 )
+
+Game.create(name: “Animal Crossing: New Horizons”, platform: “Nintendo Switch”, genre: ”Life Simulation”, rating: “E for Everyone”, game_description: “Build your community from scratch on a deserted island brimming with possibility!”, stock: 10 )

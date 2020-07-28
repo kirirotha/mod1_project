@@ -5,7 +5,7 @@ class CreateGames < ActiveRecord::Migration[5.2]
             t.string :platform
             t.string :genre
             t.string :rating
-            t.string :description
+            t.string :game_description
             t.integer :stock
         end
     end

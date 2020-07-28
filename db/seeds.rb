@@ -8,3 +8,15 @@ Game.create(name: "Borderlands 3", platform: "Xbox One", genre: "Shooter-Looter"
 Game.create(name: "Mario Kart 8 Deluxe", platform: "Nintendo Switch", genre: "Racing", rating: "E for Everyone", game_description: "Hit the road with the definitive version of Mario Kart 8 and play anytime, anywhere!", stock: 10 )
 Game.create(name: "Super Smash Bros. Ultimate", platform: "Nintendo Switch", genre: "Fighting", rating: "E for Everyone", game_description: "New stages and fighters are joined by the combined rosters of every past Super Smash Bros. game!", stock: 10 )
 Game.create(name: "Minecraft", platform: "Nintendo Switch", genre: "Sandbox", rating: "E for Everyone", game_description: "Minecraft is a game about placing blocks and going on adventures", stock: 10 )
+
+User.destroy_all
+User.create(name: "Andy", password: "game is life", age: 15)
+User.create(name: "Allen", password: "game is life", age: 18)
+User.create(name: "Ben", password: "game is life", age: 12)
+User.create(name: "Lucy", password: "game is life", age: 22)
+User.create(name: "Angel", password: "game is life", age: 20)
+User.create(name: "Tom", password: "game is life", age: 28)
+User.create(name: "Ryan", password: "game is life", age: 33)
+User.create(name: "Evan", password: "game is life", age: 26)
+User.create(name: "Judy", password: "game is life", age: 16)
+User.create(name: "Jessica", password: "game is life", age: 24)

@@ -1,3 +1,4 @@
+# Don't touch this file. 
 development:
   adapter: 'sqlite3'
   database: 'db/development.db'
@@ -5,3 +6,4 @@ development:
 test:
   adapter: 'sqlite3'
   database: 'db/test.db'
+

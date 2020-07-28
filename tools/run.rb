@@ -159,24 +159,24 @@ def browse_games
 
     browse_menu = prompt.select("Choose an option:") do |menu|
         #menu.enum '.'
-        menu.choice 'Search all games by title', 1
-        menu.choice 'Search by games by genre', 2  
+        menu.choice 'Search game by title', 1
+        menu.choice 'Search games by genre', 2  
         menu.choice 'List all games A-Z', 3
         menu.choice 'List available games', 4
         menu.choice 'Return to Main Menu', 5    
     end
 
     if browse_menu == 1
-        #title_search
+        title_search
 
     elsif browse_menu == 2
-        #genre_search
+        genre_search
 
     elsif browse_menu == 3
-        #list_all_games
+        list_all_games
 
     elsif browse_menu == 4 
-        #list_available_games
+        list_available_games
 
     elsif browse_menu == 5
         main_menu
@@ -193,21 +193,53 @@ def view_history
 end
 
 def title_search
-
+    prompt = TTY::Prompt.new 
+    games = Game.all.map{|game| "#{game.name} - #{game.platform}"}.sort 
+    games_m = prompt.select("Search for title", games, filter: true)
+    game_info(games_m)
 end
 
 def genre_search
-
+    prompt = TTY::Prompt.new
+    game_genre = Game.all.map{|game| "#{game.genre}"}.uniq.sort 
+    game_genre_m = prompt.select("Choose a genre", game_genre, filter: true)
 end
 
 def list_all_games
-
+    prompt = TTY::Prompt.new
+    all_games = Game.all.map{|game| "#{game.name} - #{game.platform}"}.sort
+    all_games_m  = prompt.select("Choose a game", all_games, filter: true)
+    game_info(all_games_m)
 end
 
 def list_available_games
-
+    prompt = TTY::Prompt.new
+    in_stock = Game.all.select{|game| game.stock > 0}
+    in_stock_games = in_stock.map{|game| "#{game.name} - #{game.platform}"}.sort
+    in_stock_games_m = prompt.select("Choose a game", in_stock_games, filter: true)
+    game_info(in_stock_games_m)
 end
 
+def game_info(selected_game)
+    prompt = TTY::Prompt.new
+    data = selected_game.split(" - ")
+    searched_game = Game.all.find{|game| game.name == data[0]}
+    puts searched_game.name
+    puts searched_game.platform
+    puts searched_game.genre
+    puts searched_game.rating
+    puts searched_game.game_description
+    browse_menu = prompt.select("Choose an option:") do |menu|
+        #menu.enum '.'
+        menu.choice 'Checkout Game', 1
+        menu.choice 'Reserve Game', 2
+        menu.choice 'Previous Menu', 3
+    end
+
+    if browse_menu == 3
+        browse_games
+    end
+end
 
 
 

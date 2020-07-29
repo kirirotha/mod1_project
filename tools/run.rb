@@ -71,14 +71,57 @@ def login
         q.modify   :capitalize
     end
 
-    password_in =prompt.mask("What is your password?") do |q|
-        q.required true
-        q.validate /\A\w+\Z/
-        q.modify   :capitalize
+    name_match = User.all.find do |user|
+         user.name == name_in
+        
     end
 
-    main_menu
+    if name_match == nil
+        puts "Username does not exist"
+        print " ---press any key---"                                                                                                    
+        STDIN.getch                                                                                                              
+        print "  \r" 
+        start_here
+    end
+
+    password_verify(name_match)
+
 end
+
+def password_verify(name_match)
+    prompt = TTY::Prompt.new
+    index = 0
+    
+    while index < 3 do
+        password_in =prompt.mask("What is your password?") do |q|
+            q.required true
+            q.validate /\A\w+\Z/
+            #q.modify   :capitalize
+        end    
+
+        if name_match.authenticate(password_in)
+            puts " "
+            puts "   Welcome #{name_match.name}"
+            puts " ---press any key---"                                                                                                    
+            STDIN.getch                                                                                                              
+            print "  \r" 
+            @user = name_match
+            return main_menu
+        else
+            puts " "
+            puts "Incorrect Password"
+        end
+        index += 1
+        puts "Try again. You have #{3-index} tries left" 
+    end
+    puts " "
+    puts "Returning to start screen "
+    puts " ---press any key---"                                                                                                    
+    STDIN.getch                                                                                                              
+    print "  \r" 
+    start_here
+end
+
 
 
 def create_new_user
@@ -90,28 +133,49 @@ def create_new_user
         q.modify   :capitalize
     end
 
-    create_new_password
+    x = User.all.find do |u|
+        name_in == u.name
+    end
+
+    if x != nil
+        puts " "
+        puts "Username already exists."
+        print "press any key"                                                                                                    
+        STDIN.getch                                                                                                              
+        print "  \r" 
+        return start_here
+    end
+
+
+    create_new_password(name_in)
 end
 
-def create_new_password
+def create_new_password(name_in)
     prompt = TTY::Prompt.new
 
     password_in =prompt.mask("What is your password?") do |q|
         q.required true
         q.validate /\A\w+\Z/
-        q.modify   :capitalize
+        #q.modify   :capitalize
      end
 
-     password_verify =prompt.mask("Please verify your password:") do |q|
+    password_verify =prompt.mask("Please verify your password:") do |q|
         q.required true
         q.validate /\A\w+\Z/
-        q.modify   :capitalize
-     end
+        #q.modify   :capitalize
+    end
 
     if password_in != password_verify
-        puts "Passwords do not match!"      
-        create_new_password
+        puts "Passwords do not match!"
+        puts "Please try again."      
+        return create_new_password(name_in)
     else
+        age =prompt.ask("How old are you?") do |q|
+            q.required true
+            q.validate /\A\w+\Z/
+            #q.modify   :capitalize
+        end
+        User.create(name: name_in, password: password_in, age: age)
         puts " "
         puts "New user sucessfully created!"
         print "press any key"                                                                                                    

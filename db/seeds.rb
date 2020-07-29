@@ -11,16 +11,16 @@ Game.create(name: "Minecraft", platform: "Nintendo Switch", genre: "Sandbox", ra
 Game.create(name: "Animal Crossing: New Horizons", platform: "Nintendo Switch", genre: "Life Simulation", rating: "E for Everyone", game_description: "Build your community from scratch on a deserted island brimming with possibility!", stock: 0 )
 
 User.destroy_all
-User.create(name: "Andy", password: "game is life", age: 15)
-User.create(name: "Allen", password: "game is life", age: 18)
-User.create(name: "Ben", password: "game is life", age: 12)
-User.create(name: "Lucy", password: "game is life", age: 22)
-User.create(name: "Angel", password: "game is life", age: 20)
-User.create(name: "Tom", password: "game is life", age: 28)
-User.create(name: "Ryan", password: "game is life", age: 33)
-User.create(name: "Evan", password: "game is life", age: 26)
-User.create(name: "Judy", password: "game is life", age: 16)
-User.create(name: "Jessica", password: "game is life", age: 24)
+# User.create(name: "Andy", password: "gameislife", age: 15)
+# User.create(name: "Allen", password: "gameislife", age: 18)
+# User.create(name: "Ben", password: "gameislife", age: 12)
+# User.create(name: "Lucy", password: "gameislife", age: 22)
+# User.create(name: "Angel", password: "gameislife", age: 20)
+# User.create(name: "Tom", password: "gameislife", age: 28)
+# User.create(name: "Ryan", password: "gameislife", age: 33)
+# User.create(name: "Evan", password: "gameislife", age: 26)
+# User.create(name: "Judy", password: "gameislife", age: 16)
+# User.create(name: "Jessica", password: "gameislife", age: 24)
 
 Checkout.destroy_all
 Checkout.create(user_id:7, game_id:5, rating:8, comment:"feels good to keep shooting", checkout_date: 2020-12-19, return_date: 2020-04-26)

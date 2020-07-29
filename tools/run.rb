@@ -187,7 +187,7 @@ end
 
 def main_menu
     prompt = TTY::Prompt.new
-    
+
     puts `clear`
     welcome_message 
 
@@ -233,26 +233,42 @@ def browse_games
         #menu.enum '.'
         menu.choice 'Search game by title', 1
         menu.choice 'Search games by genre', 2  
-        menu.choice 'List all games A-Z', 3
-        menu.choice 'List available games', 4
-        menu.choice 'Return to Main Menu', 5    
+        menu.choice 'Search games by platform', 3
+        menu.choice 'Search games by rating', 4
+        menu.choice 'List all game A-Z', 5 
+        menu.choice 'List available games', 6
+        menu.choice 'Return to Main Menu', 7   
     end
 
     if browse_menu == 1
         title_search
-
+    
     elsif browse_menu == 2
         genre_search
-
+    
     elsif browse_menu == 3
+        platform_search
+    
+    elsif browse_menu == 4
+        rating_search
+    
+    elsif browse_menu == 5
         list_all_games
-
-    elsif browse_menu == 4 
+    
+    elsif browse_menu == 6 
         list_available_games
-
+    
     elsif browse_menu == 5
         main_menu
     end 
+
+end
+
+def checkout_game
+
+end
+
+def reserve_game
 
 end
 
@@ -275,6 +291,45 @@ def genre_search
     prompt = TTY::Prompt.new
     game_genre = Game.all.map{|game| "#{game.genre}"}.uniq.sort 
     game_genre_m = prompt.select("Choose a genre", game_genre, filter: true)
+    games_by_genre(game_genre_m)
+end
+
+def games_by_genre(selected_category)
+    prompt = TTY::Prompt.new
+    games_by_genre = Game.all.select{|game| game.genre == selected_category}
+    games_by_genre_name = games_by_genre.map{|game| "#{game.name} - #{game.platform}"}.sort
+    games_by_genre_m = prompt.select("Choose a game", games_by_genre_name, filter: true)
+    game_info(games_by_genre_m)
+end
+
+def platform_search
+    prompt = TTY::Prompt.new
+    game_platform = Game.all.map{|game| "#{game.platform}"}.uniq.sort
+    game_platform_m = prompt.select("Choose a platform", game_platform, filter: true)
+    games_by_platform(game_platform_m)
+end
+
+def games_by_platform(selected_category)
+    prompt = TTY::Prompt.new
+    gbp = Game.all.select{|game| game.platform == selected_category}
+    gbpn = gbp.map{|game| "#{game.name} - #{game.platform}"}.sort 
+    gbpn_m = prompt.select("Choose a game", gbpn, filter: true)
+    game_info(gbpn_m)
+end
+
+def rating_search
+    prompt = TTY::Prompt.new
+    game_rating = Game.all.map{|game| "#{game.rating}"}.uniq.sort
+    game_rating_m = prompt.select("Choose a rating", game_rating, filter: true)
+    games_by_rating(game_rating_m)
+end
+
+def games_by_rating(selected_category)
+    prompt = TTY::Prompt.new
+    gbr = Game.all.select{|game| game.rating == selected_category}
+    gbrn = gbr.map{|game| "#{game.name} - #{game.platform}"}.sort
+    gbrn_m = prompt.select("Choose a game", gbrn, filter: true)
+    game_info(gbrn_m)
 end
 
 def list_all_games
@@ -305,10 +360,14 @@ def game_info(selected_game)
         #menu.enum '.'
         menu.choice 'Checkout Game', 1
         menu.choice 'Reserve Game', 2
-        menu.choice 'Previous Menu', 3
+        menu.choice 'Browse Games', 3
     end
 
-    if browse_menu == 3
+    if browse_menu == 1
+        checkout_game
+    elsif browse_menu == 2
+        reserve_game    
+    elsif browse_menu == 3
         browse_games
     end
 end

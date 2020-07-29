@@ -17,6 +17,8 @@ def exit
 end
 
 def welcome_message
+    
+
     puts "Welcome to the Compendium!"
     puts "++++++++++++++++++++++++++"
     puts " "

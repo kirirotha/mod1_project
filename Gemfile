@@ -11,4 +11,5 @@ gem 'database_cleaner'
 gem 'require_all'
 gem 'tty-prompt'
 gem 'bcrypt', '~> 3.1', '>= 3.1.15'
+gem 'tty-table'
 

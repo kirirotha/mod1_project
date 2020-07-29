@@ -1,5 +1,5 @@
 require_relative '../config/environment.rb'
-prompt = TTY::Prompt.new
+require 'date'
 
 
 def start_here
@@ -10,14 +10,15 @@ end
 
 def exit
     puts `clear`
+    compendium_image
     puts "Thanks for choosing the Compendium!"
     puts "See you soon!"
     puts
     puts
 end
 
-def welcome_message
-    
+def compendium_image
+    puts ""
     puts "   ██████╗ ██████╗ ███╗   ███╗██████╗ ███████╗███╗   ██╗██████╗ ██╗██╗   ██╗███╗   ███╗ "
     puts "  ██╔════╝██╔═══██╗████╗ ████║██╔══██╗██╔════╝████╗  ██║██╔══██╗██║██║   ██║████╗ ████║ "
     puts "  ██║     ██║   ██║██╔████╔██║██████╔╝█████╗  ██╔██╗ ██║██║  ██║██║██║   ██║██╔████╔██║ "
@@ -25,6 +26,10 @@ def welcome_message
     puts "  ╚██████╗╚██████╔╝██║ ╚═╝ ██║██║     ███████╗██║ ╚████║██████╔╝██║╚██████╔╝██║ ╚═╝ ██║ "
     puts "   ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝     ╚══════╝╚═╝  ╚═══╝╚═════╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝ "
     puts "                                                                                        "
+end
+
+def welcome_message
+    compendium_image
     puts "Welcome to the Compendium!"
     puts "++++++++++++++++++++++++++"
     puts " "
@@ -106,6 +111,7 @@ def password_verify(name_match)
             STDIN.getch                                                                                                              
             print "  \r" 
             @user = name_match
+            index = 3
             return main_menu
         else
             puts " "
@@ -159,13 +165,13 @@ def create_new_password(name_in)
         #q.modify   :capitalize
      end
 
-    password_verify =prompt.mask("Please verify your password:") do |q|
+    password_verifying =prompt.mask("Please verify your password:") do |q|
         q.required true
         q.validate /\A\w+\Z/
         #q.modify   :capitalize
     end
 
-    if password_in != password_verify
+    if password_in != password_verifying
         puts "Passwords do not match!"
         puts "Please try again."      
         return create_new_password(name_in)
@@ -175,13 +181,13 @@ def create_new_password(name_in)
             q.validate /\A\w+\Z/
             #q.modify   :capitalize
         end
-        User.create(name: name_in, password: password_in, age: age)
+        @user = User.create(name: name_in, password: password_in, age: age)
         puts " "
         puts "New user sucessfully created!"
         print "press any key"                                                                                                    
         STDIN.getch                                                                                                              
         print "  \r" 
-        main_menu
+        return main_menu
     end
 end
 
@@ -204,11 +210,11 @@ def main_menu
     
 
     elsif main_m == 2
-        #return_game
+        return_game
     
 
     elsif main_m == 3
-        #view_history
+        view_history
     
 
     elsif main_m == 4
@@ -258,14 +264,37 @@ def browse_games
     elsif browse_menu == 6 
         list_available_games
     
-    elsif browse_menu == 5
+    elsif browse_menu == 7
         main_menu
     end 
 
 end
 
-def checkout_game
+def checkout_game(searched_game)
+    prompt = TTY::Prompt.new
+    
+    cc = Checkout.new(user_id: @user.id, game_id: searched_game.id)
+    browse_menu = prompt.select("Do you want to checkout #{searched_game.name}?") do |menu|
+        #menu.enum '.'
+        menu.choice 'Yes', 1
+        menu.choice 'Browse more games', 2  
+    end
 
+    if browse_menu == 1
+        cc.checkout_date = DateTime.now
+        cc.save
+        searched_game.stock -= 1
+        searched_game.save
+        puts " "
+        puts "You have checked out #{searched_game.name}."
+        print "press any key"                                                                                                    
+        STDIN.getch                                                                                                              
+        print "  \r" 
+        main_menu
+    elsif browse_menu == 2
+        browse_games    
+    end
+    
 end
 
 def reserve_game
@@ -273,11 +302,48 @@ def reserve_game
 end
 
 def return_game
-
+    prompt = TTY::Prompt.new
+    games_out = Checkout.all.select{ |ch| ch.user_id == @user.id && ch.return_date == nil}
+    checkout_list = games_out.map{|chckout| "#{chckout.game.name} - #{chckout.game.platform}"}.sort
+    checkout_list << "Go Back"
+    return_this_game = prompt.select("Choose a game to return:", checkout_list)
+    if return_this_game == "Go Back"
+        return main_menu
+    end
+    process_return(return_this_game)
 end
 
-def view_history
+def process_return(return_this_game)
+    
+    data = return_this_game.split(" - ")
+    returned_game = Game.all.find{|game| game.name == data[0] && game.platform == data[1]}
+    returned_game.stock += 1
+    returned_game.save
+    games_out = Checkout.all.select{ |ch| ch.user_id == @user.id && ch.return_date == nil}
+    return_this = games_out.find{ |chkout| chkout.game.name == data[0] && chkout.game.platform == data[1]}
+    return_this.return_date = DateTime.now
+    return_this.save
+    main_menu
+end
 
+
+
+def view_history
+    vh = []
+    vh = Checkout.all.select{ |ch| ch.user_id == @user.id}
+    headers = ["Game", "Platform", "Checkout_date", "Return_date"]
+    rows = vh.map { |h| [h.game.name, h.game.platform, h.checkout_date, h.return_date]}
+    # games_rented = vh.map{ |h| h.game.name}
+    # platform = vh.map{ |h| h.game.platform}
+    # checkout_date = vh.map{ |h| h.checkout_date}
+    # return_date = vh.map{ |h| h.return_date}
+    table = TTY::Table.new headers, rows
+    renderer = TTY::Table::Renderer::Unicode.new(table)
+    puts renderer.render
+    print "press any key to return to main menu"                                                                                                    
+    STDIN.getch                                                                                                              
+    print "  \r" 
+    main_menu
 end
 
 def title_search
@@ -356,15 +422,25 @@ def game_info(selected_game)
     puts searched_game.genre
     puts searched_game.rating
     puts searched_game.game_description
-    browse_menu = prompt.select("Choose an option:") do |menu|
-        #menu.enum '.'
-        menu.choice 'Checkout Game', 1
-        menu.choice 'Reserve Game', 2
-        menu.choice 'Browse Games', 3
+    
+    if searched_game.stock > 0 
+        browse_menu = prompt.select("Choose an option:") do |menu|
+            #menu.enum '.'
+            menu.choice 'Checkout Game', 1
+            menu.choice 'Reserve Game', 2
+            menu.choice 'Browse Games', 3
+        end
+    else   
+        browse_menu = prompt.select("Choose an option:") do |menu|
+            #menu.enum '.'
+            menu.choice 'Checkout Game', 1, disabled: "(Out of Stock)" 
+            menu.choice 'Reserve Game', 2
+            menu.choice 'Browse Games', 3
+        end
     end
 
     if browse_menu == 1
-        checkout_game
+        checkout_game(searched_game)
     elsif browse_menu == 2
         reserve_game    
     elsif browse_menu == 3

@@ -187,7 +187,7 @@ end
 
 def main_menu
     prompt = TTY::Prompt.new
-
+    
     puts `clear`
     welcome_message 
 

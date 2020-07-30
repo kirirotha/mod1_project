@@ -1,4 +1,5 @@
 require_relative '../config/environment.rb'
+require_relative '../app/admin.rb'
 require 'date'
 
 
@@ -112,6 +113,17 @@ def password_verify(name_match)
             print "  \r" 
             @user = name_match
             index = 3
+            if @user.user_type == 1
+                return admin_menu
+
+            elsif
+                @user.user_type == 9
+                puts "Your account has been disabled."
+                puts " ---press any key---"                                                                                                    
+                STDIN.getch                                                                                                              
+                print "  \r" 
+                return start_here
+            end
             return main_menu
         else
             puts " "
@@ -181,7 +193,7 @@ def create_new_password(name_in)
             q.validate /\A\w+\Z/
             #q.modify   :capitalize
         end
-        @user = User.create(name: name_in, password: password_in, age: age)
+        @user = User.create(name: name_in, password: password_in, age: age, user_type: 2)
         puts " "
         puts "New user sucessfully created!"
         print "press any key"                                                                                                    
@@ -333,10 +345,6 @@ def view_history
     vh = Checkout.all.select{ |ch| ch.user_id == @user.id}
     headers = ["Game", "Platform", "Checkout_date", "Return_date"]
     rows = vh.map { |h| [h.game.name, h.game.platform, h.checkout_date, h.return_date]}
-    # games_rented = vh.map{ |h| h.game.name}
-    # platform = vh.map{ |h| h.game.platform}
-    # checkout_date = vh.map{ |h| h.checkout_date}
-    # return_date = vh.map{ |h| h.return_date}
     table = TTY::Table.new headers, rows
     renderer = TTY::Table::Renderer::Unicode.new(table)
     puts renderer.render
@@ -415,6 +423,7 @@ end
 
 def game_info(selected_game)
     prompt = TTY::Prompt.new
+    
     data = selected_game.split(" - ")
     searched_game = Game.all.find{|game| game.name == data[0]}
     puts searched_game.name

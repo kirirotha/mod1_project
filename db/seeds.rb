@@ -1,4 +1,5 @@
 Game.destroy_all
+Game.create(name: "A game to test", platform: "Playstation 4", genre: "Sports", rating: "E for Everyone", game_description: "NBA 2K20 is a platform for gamers and ballers to come together and create what’s next in basketball culture.", stock: 10)
 Game.create(name: "NBA 2K20", platform: "Playstation 4", genre: "Sports", rating: "E for Everyone", game_description: "NBA 2K20 is a platform for gamers and ballers to come together and create what’s next in basketball culture.", stock: 10)
 Game.create(name: "NBA 2K20", platform: "Xbox One", genre: "Sports", rating: "E for Everyone", game_description: "NBA 2K20 is a platform for gamers and ballers to come together and create what’s next in basketball culture.", stock: 10 )
 Game.create(name: "Mortal Kombat 11", platform: "Playstation 4", genre: "Fighting", rating: "M for Mature", game_description: "The new graphics engine showcasing every skull shattering, eye popping moment, brings you so close to the fight you can feel it.", stock: 10)
@@ -33,6 +34,9 @@ Game.create(name: "Xenoblade Chronicles 2", platform: "Nintendo Switch", genre: 
 
 
 User.destroy_all
+User.create(name: "Admin", password: "admin", age: 2000, user_type:1)
+User.create(name: "Jerk", password: "aaa", age: 10, user_type:9)
+
 # User.create(name: "Andy", password: "gameislife", age: 15)
 # User.create(name: "Allen", password: "gameislife", age: 18)
 # User.create(name: "Ben", password: "gameislife", age: 12)

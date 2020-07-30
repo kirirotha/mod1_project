@@ -1,6 +1,3 @@
-This is a test!
-This a second test!
-
 
 The Compendium!
 A service that links players to our vast library of games, allowing them to check out and play multiple titles by subscribing to our service! 

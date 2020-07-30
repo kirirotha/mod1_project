@@ -44,17 +44,17 @@ def admin_games_menu
 
     admin_games_m = prompt.select("Please Select from the menu below:") do |menu|
         #menu.enum '.'
-        menu.choice 'View All Games / Modify / Delete', 1
+        menu.choice 'View All Games / Modify / Disable', 1
         menu.choice 'Add Game', 2
         
-        menu.choice 'Go Back', 5
+        menu.choice 'Go Back', 3
     end
 
     if admin_games_m == 1 
         admin_view_games
     elsif admin_games_m == 2 
         add_game
-    elsif admin_games_m == 5 
+    elsif admin_games_m == 3 
         admin_menu
     end
 end
@@ -62,8 +62,13 @@ end
 def admin_view_games
     prompt = TTY::Prompt.new
     all_games = Game.all.map{|game| "#{game.name} - #{game.platform}"}.sort
+    all_games.unshift("Go Back")
     all_games_m  = prompt.select("Choose a game", all_games, filter: true)
-    admin_game_info(all_games_m)
+    if all_games_m == "Go Back"
+        admin_games_menu
+    else
+        admin_game_info(all_games_m)
+    end
 end
 
 def admin_game_info(selected_game)
@@ -86,7 +91,7 @@ def admin_game_info(selected_game)
         menu.choice 'Adjust Rating', 4
         menu.choice 'Adjust Description', 5
         menu.choice 'Adjust Stock', 6
-        menu.choice 'Remove Game', 7
+        menu.choice 'Disable Game', 7
         menu.choice 'Go Back', 8
     end
     
@@ -117,8 +122,9 @@ def admin_game_info(selected_game)
         if verify_choice == 2
             return admin_games_menu
         else
-        searched_game.destroy
-        puts " \n < #{searched_game.name} > has been removed from your inventory"
+        searched_game.stock = 0
+        searched_game.save
+        puts " \n < #{searched_game.name} > has been disabled"
         print "press any key to return to main menu"                                                                                                    
         STDIN.getch                                                                                                              
         print "  \r" 
@@ -195,7 +201,7 @@ def add_game
     if verify_choice == 2
         return admin_games_menu
     else
-        Game.create(name: title, platform: platform, genre: genre, rating: rating, game_description: game_description, stock: inventory)
+        Game.create(name: title, platform: platform, genre: genre, rating: rating, game_description: game_description, stock: inventory, active: true)
         puts `clear`
         puts title
         puts platform
@@ -233,8 +239,8 @@ def view_all_users
     prompt = TTY::Prompt.new 
     # user = User.all.map{|user| "#{user.id} - #{user.name} - #{user.age} - #{user.type}"}.sort 
     # user_m = prompt.select("Search for User", user, filter: true)
-    headers = ["Username", "Age", "User Type"]
-    rows = User.all.map { |h| [h.name, h.age, h.user_type]}
+    headers = ["Username", "Age", "Email Address","User Type"]
+    rows = User.all.map { |h| [h.name, h.age, h.email, h.user_type]}
     table = TTY::Table.new headers, rows
     renderer = TTY::Table::Renderer::Unicode.new(table)
     puts renderer.render
@@ -335,7 +341,7 @@ def admin_view_user_checkouts
     print "press any key to return to main menu"                                                                                                    
     STDIN.getch                                                                                                              
     print "  \r" 
-    main_menu
+    admin_menu
 
 end
 

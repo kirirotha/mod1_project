@@ -212,15 +212,15 @@ def add_game
     if verify_choice == 2
         return admin_games_menu
     else
-        Game.create(name: title, platform: platform, genre: genre, rating: rating, game_description: game_description, stock: inventory, active: true)
+        new_game = Game.create(name: title, platform: platform, genre: genre, rating: rating, game_description: game_description, stock: inventory, active: true)
         puts `clear`
         compendium_image
-        puts pastel.red("\nTitle: ") + "#{searched_game.name}"
-        puts pastel.red("\nPlatform: ") + "#{searched_game.platform}"
-        puts pastel.red("\nGenre: ") + "#{searched_game.genre}"
-        puts pastel.red("\nRating: ") + "#{searched_game.rating}"
-        puts pastel.red("\nDescription: ") + "#{wrap(searched_game.game_description)}"
-        puts pastel.red("\nStock: ") + "#{searched_game.stock}"
+        puts pastel.red("\nTitle: ") + "#{new_game.name}"
+        puts pastel.red("\nPlatform: ") + "#{new_game.platform}"
+        puts pastel.red("\nGenre: ") + "#{new_game.genre}"
+        puts pastel.red("\nRating: ") + "#{new_game.rating}"
+        puts pastel.red("\nDescription: ") + "#{wrap(new_game.game_description)}"
+        puts pastel.red("\nStock: ") + "#{new_game.stock}"
         puts " "
         puts " \n This game has been added to the inventory"
         print " ---press any key to return to main menu---"                                                                                                    

@@ -61,6 +61,8 @@ end
 
 def admin_view_games
     prompt = TTY::Prompt.new
+    puts `clear`
+    compendium_image
     all_games = Game.all.map{|game| "#{game.name} - #{game.platform}"}.sort
     all_games.unshift("Go Back")
     all_games_m  = prompt.select("Choose a game", all_games, filter: true)
@@ -73,15 +75,17 @@ end
 
 def admin_game_info(selected_game)
     prompt = TTY::Prompt.new
+    pastel = Pastel.new
     puts `clear`
+    compendium_image
     data = selected_game.split(" - ")
     searched_game = Game.all.find{|game| game.name == data[0]}
-    puts searched_game.name
-    puts searched_game.platform
-    puts searched_game.genre
-    puts searched_game.rating
-    puts searched_game.game_description
-    puts "Stock: #{searched_game.stock}"
+    puts pastel.red("\nTitle: ") + "#{searched_game.name}"
+    puts pastel.red("\nPlatform: ") + "#{searched_game.platform}"
+    puts pastel.red("\nGenre: ") + "#{searched_game.genre}"
+    puts pastel.red("\nRating: ") + "#{searched_game.rating}"
+    puts pastel.red("\nDescription: ") + "#{wrap(searched_game.game_description)}"
+    puts pastel.red("\nStock: ") + "#{searched_game.stock}"
     puts " "
     browse_menu = prompt.select("Choose an option:") do |menu|
         #menu.enum '.'
@@ -137,6 +141,8 @@ end
 
 def change_game_attribute(searched_game, thing_to_change, string_to_change)
     prompt = TTY::Prompt.new
+    puts `clear`
+    compendium_image
 
     name_in =prompt.ask("What is the new #{string_to_change}?")
         puts "!!! Do you want to change the #{string_to_change} !!! \n  from <#{thing_to_change}> \n    to <#{name_in}> ???"
@@ -179,6 +185,10 @@ end
 
 def add_game
     prompt = TTY::Prompt.new
+    pastel = Pastel.new
+
+    puts `clear`
+    compendium_image
     title = prompt.ask("What is the new game title?") 
     platform = prompt.ask("What is the new game platform?")
     genre = prompt.ask("What is the new game genre?")
@@ -186,12 +196,13 @@ def add_game
     game_description = prompt.ask("What is the new game description?")
     inventory = prompt.ask("How many copies do you want to add?")
     puts `clear`
-    puts title
-    puts platform
-    puts genre
-    puts rating
-    puts game_description
-    puts "Stock: #{inventory}"
+    compendium_image
+    puts pastel.red("\nTitle: ") + "#{title}"
+    puts pastel.red("\nPlatform: ") + "#{platform}"
+    puts pastel.red("\nGenre: ") + "#{genre}"
+    puts pastel.red("\nRating: ") + "#{rating}"
+    puts pastel.red("\nDescription: ") + "#{wrap(game_description)}"
+    puts pastel.red("\nStock: ") + "#{inventory}"
     puts " "
     verify_choice = prompt.select("Are you sure you want to add this game?") do |menu|
         #menu.enum '.'
@@ -203,13 +214,16 @@ def add_game
     else
         Game.create(name: title, platform: platform, genre: genre, rating: rating, game_description: game_description, stock: inventory, active: true)
         puts `clear`
-        puts title
-        puts platform
-        puts genre
-        puts rating
-        puts game_description
-        puts " \n This game has been added"
-        print "press any key to return to main menu"                                                                                                    
+        compendium_image
+        puts pastel.red("\nTitle: ") + "#{searched_game.name}"
+        puts pastel.red("\nPlatform: ") + "#{searched_game.platform}"
+        puts pastel.red("\nGenre: ") + "#{searched_game.genre}"
+        puts pastel.red("\nRating: ") + "#{searched_game.rating}"
+        puts pastel.red("\nDescription: ") + "#{wrap(searched_game.game_description)}"
+        puts pastel.red("\nStock: ") + "#{searched_game.stock}"
+        puts " "
+        puts " \n This game has been added to the inventory"
+        print " ---press any key to return to main menu---"                                                                                                    
         STDIN.getch                                                                                                              
         print "  \r" 
         admin_menu
@@ -219,6 +233,8 @@ end
 
 def admin_users_menu
     prompt = TTY::Prompt.new
+    puts `clear`
+    compendium_image
 
     admin_users_m = prompt.select("Please Select from the menu below:") do |menu|
         #menu.enum '.'
@@ -237,6 +253,8 @@ end
 
 def view_all_users
     prompt = TTY::Prompt.new 
+    puts `clear`
+    compendium_image
     # user = User.all.map{|user| "#{user.id} - #{user.name} - #{user.age} - #{user.type}"}.sort 
     # user_m = prompt.select("Search for User", user, filter: true)
     headers = ["Username", "Age", "Email Address","User Type"]
@@ -244,7 +262,7 @@ def view_all_users
     table = TTY::Table.new headers, rows
     renderer = TTY::Table::Renderer::Unicode.new(table)
     puts renderer.render
-    print "press any key to return to main menu"                                                                                                    
+    print "\n ---press any key to return to main menu--- \n"                                                                                                    
     STDIN.getch                                                                                                              
     print "  \r" 
     admin_menu
@@ -254,6 +272,8 @@ end
 
 def disable_enable_account
     prompt = TTY::Prompt.new 
+    puts `clear`
+    compendium_image
     user = User.all.map{|user| "#{user.id} - #{user.name} - #{user.age} - #{user.user_type}"}.sort 
     user_m = prompt.select("Search for User to disable / enable account", user, filter: true)
     #disabled account is user.user_type = 9
@@ -272,7 +292,7 @@ def disable_enable_account
         searched_user.user_type = 9
         searched_user.save
         puts "  #{data[1]}  <-- This account has been disabled"
-        print "press any key to return to main menu"                                                                                                    
+        print "\n ---press any key to return to main menu---"                                                                                                    
         STDIN.getch                                                                                                              
         print "  \r" 
         admin_menu
@@ -280,7 +300,7 @@ def disable_enable_account
         searched_user.user_type = 2
         searched_user.save
         puts "  #{data[1]}  <-- This account has been enabled"
-        print "press any key to return to main menu"                                                                                                    
+        print "\n ---press any key to return to main menu---"                                                                                                    
         STDIN.getch                                                                                                              
         print "  \r" 
         admin_menu
@@ -291,6 +311,8 @@ end
 
 def admin_checkouts_menu
     prompt = TTY::Prompt.new
+    puts `clear`
+    compendium_image
 
     admin_checkouts_m = prompt.select("Please Select from the menu below:") do |menu|
         #menu.enum '.'
@@ -312,6 +334,8 @@ def admin_checkouts_menu
 end
 
 def admin_view_active_checkouts
+    puts `clear`
+    compendium_image
     vh = []
     vh = Checkout.all.select{ |ch| ch.return_date == nil}
     headers = ["User", "Game", "Platform", "Checkout_date", "Return_date"]
@@ -319,7 +343,7 @@ def admin_view_active_checkouts
     table = TTY::Table.new headers, rows
     renderer = TTY::Table::Renderer::Unicode.new(table)
     puts renderer.render
-    print "press any key to return to main menu"                                                                                                    
+    print "\n ---press any key to return to main menu---"                                                                                                    
     STDIN.getch                                                                                                              
     print "  \r" 
     admin_menu
@@ -327,6 +351,10 @@ end
 
 def admin_view_user_checkouts
     prompt = TTY::Prompt.new 
+    pastel = Pastel.new
+
+    puts `clear`
+    compendium_image
     user = User.all.map{|user| "#{user.id} - #{user.name} - #{user.age} - #{user.user_type}"}.sort 
     user_m = prompt.select("Search for User to view Checkout history:", user, filter: true)
     data = user_m.split(" - ")
@@ -338,7 +366,7 @@ def admin_view_user_checkouts
     table = TTY::Table.new headers, rows
     renderer = TTY::Table::Renderer::Unicode.new(table)
     puts renderer.render
-    print "press any key to return to main menu"                                                                                                    
+    print "\n ---press any key to return to main menu--- \n"                                                                                                    
     STDIN.getch                                                                                                              
     print "  \r" 
     admin_menu
@@ -346,12 +374,14 @@ def admin_view_user_checkouts
 end
 
 def admin_view_all_checkouts
+    puts `clear`
+    compendium_image
     headers = ["User", "Game", "Platform", "Checkout_date", "Return_date"]
     rows = Checkout.all.map { |h| [h.user.name, h.game.name, h.game.platform, h.checkout_date, h.return_date]}
     table = TTY::Table.new headers, rows
     renderer = TTY::Table::Renderer::Unicode.new(table)
     puts renderer.render
-    print "press any key to return to main menu"                                                                                                    
+    print "\n ---press any key to return to main menu--- \n"                                                                                                    
     STDIN.getch                                                                                                              
     print "  \r" 
     admin_menu

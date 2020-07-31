@@ -12,36 +12,42 @@ end
 def exit
     puts `clear`
     compendium_image
-    puts "Thanks for choosing the Compendium!"
-    puts "See you soon!"
+    puts "\n Thanks for choosing the Compendium!"
+    puts "\n See you soon!"
     puts
     puts
 end
 
 def compendium_image
-    puts ""
-    puts "   ██████╗ ██████╗ ███╗   ███╗██████╗ ███████╗███╗   ██╗██████╗ ██╗██╗   ██╗███╗   ███╗ "
-    puts "  ██╔════╝██╔═══██╗████╗ ████║██╔══██╗██╔════╝████╗  ██║██╔══██╗██║██║   ██║████╗ ████║ "
-    puts "  ██║     ██║   ██║██╔████╔██║██████╔╝█████╗  ██╔██╗ ██║██║  ██║██║██║   ██║██╔████╔██║ "
-    puts "  ██║     ██║   ██║██║╚██╔╝██║██╔═══╝ ██╔══╝  ██║╚██╗██║██║  ██║██║██║   ██║██║╚██╔╝██║ "
-    puts "  ╚██████╗╚██████╔╝██║ ╚═╝ ██║██║     ███████╗██║ ╚████║██████╔╝██║╚██████╔╝██║ ╚═╝ ██║ "
-    puts "   ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝     ╚══════╝╚═╝  ╚═══╝╚═════╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝ "
-    puts "                                                                                        "
+    box = TTY::Box.frame(width: 100, height: 14, align: :center, padding: 3,
+    style: {fg: :black,bg: :green,
+    border: {fg: :black,bg: :green}}) do    
+" ██████╗ ██████╗ ███╗   ███╗██████╗ ███████╗███╗   ██╗██████╗ ██╗██╗   ██╗███╗   ███╗
+██╔════╝██╔═══██╗████╗ ████║██╔══██╗██╔════╝████╗  ██║██╔══██╗██║██║   ██║████╗ ████║ 
+██║     ██║   ██║██╔████╔██║██████╔╝█████╗  ██╔██╗ ██║██║  ██║██║██║   ██║██╔████╔██║ 
+██║     ██║   ██║██║╚██╔╝██║██╔═══╝ ██╔══╝  ██║╚██╗██║██║  ██║██║██║   ██║██║╚██╔╝██║ 
+╚██████╗╚██████╔╝██║ ╚═╝ ██║██║     ███████╗██║ ╚████║██████╔╝██║╚██████╔╝██║ ╚═╝ ██║ 
+ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝     ╚══════╝╚═╝  ╚═══╝╚═════╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝ 
+"                                                                                        
+
+    end
+    puts box
+    puts " "
 end
 
 def welcome_message
+    puts `clear`
     compendium_image
-    puts "Welcome to the Compendium!"
-    puts "++++++++++++++++++++++++++"
+    puts "\n Welcome to the Compendium!"
+    puts " ++++++++++++++++++++++++++"
     puts " "
-    puts "We are a rental service that links players to a vast library of games."
+    puts " We are a rental service that links players to a vast library of games."
     puts ""
 
 end
 
 def welcome_menu
     prompt = TTY::Prompt.new
-
     welcome_m = prompt.select(" ") do |menu|
         #menu.enum '.'
         menu.choice 'Log In', 1
@@ -55,10 +61,10 @@ def welcome_menu
         create_new_user
     elsif welcome_m == 3 
         puts " "
-        exit_menu= prompt.select("Are you sure you want to exit?") do |menu|
+        exit_menu= prompt.select(" Are you sure you want to exit?") do |menu|
             #menu.enum '.'
-            menu.choice 'Yes', 1
-            menu.choice 'No', 2    
+            menu.choice ' Yes', 1
+            menu.choice ' No', 2    
         end
         if exit_menu == 1
             exit
@@ -68,10 +74,15 @@ def welcome_menu
     end
 end
 
+def wrap(s, width=55)
+    s.gsub(/(.{1,#{width}})(\s+|\Z)/, "\\1\n")
+end
+  
+
 def login
     prompt = TTY::Prompt.new
 
-    name_in =prompt.ask("What is your name?") do |q|
+    name_in =prompt.ask("  What is your name?") do |q|
         q.required true
         q.validate /\A\w+\Z/
         q.modify   :capitalize
@@ -83,8 +94,8 @@ def login
     end
 
     if name_match == nil
-        puts "Username does not exist"
-        print " ---press any key---"                                                                                                    
+        puts "\n Username does not exist!!!"
+        print "\n  ---press any key---\n"                                                                                                    
         STDIN.getch                                                                                                              
         print "  \r" 
         start_here
@@ -99,7 +110,7 @@ def password_verify(name_match)
     index = 0
     
     while index < 3 do
-        password_in =prompt.mask("What is your password?") do |q|
+        password_in =prompt.mask("  What is your password?") do |q|
             q.required true
             q.validate /\A\w+\Z/
             #q.modify   :capitalize
@@ -107,8 +118,8 @@ def password_verify(name_match)
 
         if name_match.authenticate(password_in)
             puts " "
-            puts "   Welcome #{name_match.name}"
-            puts " ---press any key---"                                                                                                    
+            puts "  Welcome #{name_match.name}"
+            puts "\n  ---press any key---\n"                                                                                                    
             STDIN.getch                                                                                                              
             print "  \r" 
             @user = name_match
@@ -118,8 +129,8 @@ def password_verify(name_match)
 
             elsif
                 @user.user_type == 9
-                puts "Your account has been disabled."
-                puts " ---press any key---"                                                                                                    
+                puts "\n  Your account has been disabled."
+                puts "\n  ---press any key---\n"                                                                                                    
                 STDIN.getch                                                                                                              
                 print "  \r" 
                 return start_here
@@ -127,14 +138,14 @@ def password_verify(name_match)
             return main_menu
         else
             puts " "
-            puts "Incorrect Password"
+            puts "  Incorrect Password\n"
         end
         index += 1
-        puts "Try again. You have #{3-index} tries left" 
+        puts "  Try again. You have #{3-index} tries left" 
     end
     puts " "
-    puts "Returning to start screen "
-    puts " ---press any key---"                                                                                                    
+    puts "\n  Returning to start screen "
+    puts "\n   ---press any key---\n"                                                                                                    
     STDIN.getch                                                                                                              
     print "  \r" 
     start_here
@@ -144,8 +155,8 @@ end
 
 def create_new_user
     prompt = TTY::Prompt.new
-
-    name_in =prompt.ask("What is your name?") do |q|
+    welcome_message
+    name_in =prompt.ask("  What is your name?") do |q|
         q.required true
         q.validate /\A\w+\Z/
         q.modify   :capitalize
@@ -157,8 +168,8 @@ def create_new_user
 
     if x != nil
         puts " "
-        puts "Username already exists."
-        print "press any key"                                                                                                    
+        puts "  Username already exists."
+        print "\n ---press any key---\n"                                                                                                    
         STDIN.getch                                                                                                              
         print "  \r" 
         return start_here
@@ -171,37 +182,37 @@ end
 def create_new_password(name_in)
     prompt = TTY::Prompt.new
 
-    password_in =prompt.mask("What is your password?") do |q|
+    password_in =prompt.mask("  What is your password?") do |q|
         q.required true
         q.validate /\A\w+\Z/
         #q.modify   :capitalize
      end
 
-    password_verifying =prompt.mask("Please verify your password:") do |q|
+    password_verifying =prompt.mask("  Please verify your password:") do |q|
         q.required true
         q.validate /\A\w+\Z/
         #q.modify   :capitalize
     end
 
     if password_in != password_verifying
-        puts "Passwords do not match!"
-        puts "Please try again."      
+        puts "\n  Passwords do not match!"
+        puts "  Please try again."      
         return create_new_password(name_in)
     else
-        age =prompt.ask("How old are you?") do |q|
+        age =prompt.ask("  How old are you?") do |q|
             q.required true
             q.validate /\A\w+\Z/
             #q.modify   :capitalize
         end
-        email =prompt.ask("What is your email address?") do |q|
+        email =prompt.ask("  What is your email address?") do |q|
             q.required true
             #q.validate /\A\w+\Z\@/
             #q.modify   :capitalize
         end
         @user = User.create(name: name_in, password: password_in, age: age, user_type: 2, email: email)
         puts " "
-        puts "New user sucessfully created!"
-        print "press any key"                                                                                                    
+        puts "  New user sucessfully created!"
+        print "\n  ---press any key---\n"                                                                                                    
         STDIN.getch                                                                                                              
         print "  \r" 
         return main_menu
@@ -236,7 +247,7 @@ def main_menu
 
     elsif main_m == 4
         puts " "
-        exit_menu = prompt.select("Are you sure you want to exit?") do |menu|
+        exit_menu = prompt.select("  Are you sure you want to exit?") do |menu|
             #menu.enum '.'
             menu.choice 'Yes', 1
             menu.choice 'No', 2    
@@ -252,7 +263,7 @@ end
 def browse_games
     prompt = TTY::Prompt.new
 
-    browse_menu = prompt.select("Choose an option:") do |menu|
+    browse_menu = prompt.select("  Choose an option:") do |menu|
         #menu.enum '.'
         menu.choice 'Search game by title', 1
         menu.choice 'Search games by genre', 2  
@@ -291,7 +302,7 @@ def checkout_game(searched_game)
     prompt = TTY::Prompt.new
     
     cc = Checkout.new(user_id: @user.id, game_id: searched_game.id)
-    browse_menu = prompt.select("Do you want to checkout #{searched_game.name}?") do |menu|
+    browse_menu = prompt.select("  Do you want to checkout #{searched_game.name}?") do |menu|
         #menu.enum '.'
         menu.choice 'Yes', 1
         menu.choice 'Browse more games', 2  
@@ -303,8 +314,8 @@ def checkout_game(searched_game)
         searched_game.stock -= 1
         searched_game.save
         puts " "
-        puts "You have checked out #{searched_game.name}."
-        print "press any key"                                                                                                    
+        puts "  You have checked out #{searched_game.name}."
+        print "\n ---press any key---\n"                                                                                                    
         STDIN.getch                                                                                                              
         print "  \r" 
         main_menu
@@ -372,7 +383,7 @@ def view_history
     table = TTY::Table.new headers, rows
     renderer = TTY::Table::Renderer::Unicode.new(table)
     puts renderer.render
-    print "press any key to return to main menu"                                                                                                    
+    print "\n  ---press any key to return to main menu---\n"                                                                                                    
     STDIN.getch                                                                                                              
     print "  \r" 
     main_menu
@@ -380,6 +391,9 @@ end
 
 def title_search
     prompt = TTY::Prompt.new 
+    puts `clear`
+    compendium_image
+    puts ""
     games = Game.all.map{|game| "#{game.name} - #{game.platform}"}.sort 
     games.unshift("Go Back")
     games_m = prompt.select("Search for title", games, filter: true)
@@ -392,6 +406,8 @@ end
 
 def genre_search
     prompt = TTY::Prompt.new
+    puts `clear`
+    compendium_image
     game_genre = Game.all.map{|game| "#{game.genre}"}.uniq.sort
     game_genre.unshift("Go Back") 
     game_genre_m = prompt.select("Choose a genre", game_genre, filter: true)
@@ -404,6 +420,8 @@ end
 
 def games_by_genre(selected_category)
     prompt = TTY::Prompt.new
+    puts `clear`
+    compendium_image
     games_by_genre = Game.all.select{|game| game.genre == selected_category}
     games_by_genre_name = games_by_genre.map{|game| "#{game.name} - #{game.platform}"}.sort
     games_by_genre_name.unshift("Go Back")
@@ -417,6 +435,8 @@ end
 
 def platform_search
     prompt = TTY::Prompt.new
+    puts `clear`
+    compendium_image
     game_platform = Game.all.map{|game| "#{game.platform}"}.uniq.sort
     game_platform.unshift("Go Back")
     game_platform_m = prompt.select("Choose a platform", game_platform, filter: true)
@@ -429,6 +449,8 @@ end
 
 def games_by_platform(selected_category)
     prompt = TTY::Prompt.new
+    puts `clear`
+    compendium_image
     gbp = Game.all.select{|game| game.platform == selected_category}
     gbpn = gbp.map{|game| "#{game.name} - #{game.platform}"}.sort 
     gbpn_m = prompt.select("Choose a game", gbpn, filter: true)
@@ -437,6 +459,8 @@ end
 
 def rating_search
     prompt = TTY::Prompt.new
+    puts `clear`
+    compendium_image
     game_rating = Game.all.map{|game| "#{game.rating}"}.uniq.sort
     game_rating.unshift("Go Back")
     game_rating_m = prompt.select("Choose a rating", game_rating, filter: true)
@@ -449,6 +473,8 @@ end
 
 def games_by_rating(selected_category)
     prompt = TTY::Prompt.new
+    puts `clear`
+    compendium_image
     gbr = Game.all.select{|game| game.rating == selected_category}
     gbrn = gbr.map{|game| "#{game.name} - #{game.platform}"}.sort
     gbrn_m = prompt.select("Choose a game", gbrn, filter: true)
@@ -457,6 +483,8 @@ end
 
 def list_all_games
     prompt = TTY::Prompt.new
+    puts `clear`
+    compendium_image
     all_games = Game.all.map{|game| "#{game.name} - #{game.platform}"}.sort
     all_games.unshift("Go Back")
     all_games_m  = prompt.select("Choose a game", all_games, filter: true)
@@ -469,6 +497,8 @@ end
 
 def list_available_games
     prompt = TTY::Prompt.new
+    puts `clear`
+    compendium_image
     in_stock = Game.all.select{|game| game.stock > 0}
     in_stock_games = in_stock.map{|game| "#{game.name} - #{game.platform}"}.sort
     in_stock_games.unshift("Go Back")
@@ -482,21 +512,22 @@ end
 
 def game_info(selected_game)
     prompt = TTY::Prompt.new
+    pastel = Pastel.new
+
     puts `clear`
     compendium_image
     
     data = selected_game.split(" - ")
     searched_game = Game.all.find{|game| game.name == data[0]}
-    puts searched_game.name
-    puts searched_game.platform
-    puts searched_game.genre
-    puts searched_game.rating
-    puts searched_game.game_description
-    
-    xx = Checkout.all.select { |checkout| checkout.game.id == searched_game.id} 
+    puts pastel.red("\nTitle: ") + "#{searched_game.name}"
+    puts pastel.red("\nPlatform: ") + "#{searched_game.platform}"
+    puts pastel.red("\nGenre: ") + "#{searched_game.genre}"
+    puts pastel.red("\nRating: ") + "#{searched_game.rating}"
+    puts pastel.red("\nDescription: ") + "#{wrap(searched_game.game_description)}"
+    xx = Checkout.all.select { |checkout| checkout.game_id == searched_game.id} 
     user_ratings = xx.map { |x| x.rating}
     average_rating = (user_ratings.sum / user_ratings.count.to_f).truncate(2)
-    puts "Average Rating: #{average_rating}"
+    puts pastel.red("\nUser Rating: ") + "#{average_rating}"
     puts " "
 
     if searched_game.stock > 0 
@@ -527,11 +558,14 @@ end
 def view_comments(searched_game)
     puts `clear`
     compendium_image
-    xx = Checkout.all.select { |checkout| checkout.game.id == searched_game.id} 
+    xx = Checkout.all.select { |checkout| checkout.game_id == searched_game.id} 
     user_comments = xx.map { |x| x.comment }
     actual_comments = user_comments.select {|x| x != nil}
     actual_comments.each {|x| puts "\n#{x}\n"}
-    print "press any key to return to game info"                                                                                                    
+    if actual_comments.count == 0
+        puts "\n There are no comments for this game yet."
+    end
+    print "\n  ---press any key to return to game info---\n"                                                                                                    
     STDIN.getch                                                                                                              
     print "  \r"
     game_name = "#{searched_game.name} - #{searched_game.platform}"

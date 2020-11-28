@@ -1,4 +1,7 @@
+
+require 'open-uri'
 require "bundler/setup"
+Bundler.require(:default)
 require "sinatra/activerecord"
 Bundler.require
 require_all 'app/models'

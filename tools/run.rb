@@ -265,11 +265,11 @@ def browse_games
 
     browse_menu = prompt.select("  Choose an option:") do |menu|
         #menu.enum '.'
-        menu.choice 'Search game by title', 1
+        menu.choice 'Search games by title', 1
         menu.choice 'Search games by genre', 2  
         menu.choice 'Search games by platform', 3
         menu.choice 'Search games by rating', 4
-        menu.choice 'List all game A-Z', 5 
+        menu.choice 'List all games A-Z', 5 
         menu.choice 'List available games', 6
         menu.choice 'Return to Main Menu', 7   
     end
